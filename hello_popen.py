@@ -1,6 +1,6 @@
 #!usr/bin/env python
 # -*- coding: utf-8 -*-
-print( "SITLは前もって起動させておいてください" )    # 開始メッセージ
+print( "SITLをsubprocessで起動します" )    # 開始メッセージ
 
 # 必要なライブラリをインポート
 from subprocess import Popen      # subprocessの中から、Popenをインポート
