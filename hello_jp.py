@@ -21,12 +21,12 @@ try:
     while True:
         # vehicleオブジェクト内のステータスを表示
         print("--------------------------" )
-        print(" GPS: %s" % vehicle.gps_0
-        print(" Battery: %s" % vehicle.battery
-        print(" Last Heartbeat: %s" % vehicle.last_heartbeat
-        print(" Is Armable?: %s" % vehicle.is_armable
-        print(" System status: %s" % vehicle.system_status.state
-        print(" Mode: %s" % vehicle.mode.name
+        print(" GPS: %s" % vehicle.gps_0 )
+        print(" Battery: %s" % vehicle.battery )
+        print(" Last Heartbeat: %s" % vehicle.last_heartbeat )
+        print(" Is Armable?: %s" % vehicle.is_armable )
+        print(" System status: %s" % vehicle.system_status.state )
+        print(" Mode: %s" % vehicle.mode.name )
 
         time.sleep(1)
 
