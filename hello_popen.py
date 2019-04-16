@@ -15,7 +15,7 @@ sitl_frame          = 'copter'          # rover, plane, copterなどのビーク
 sitl_home_latitude  = '35.079624'       # 緯度(度)
 sitl_home_longitude = '136.905453'      # 経度(度)
 sitl_home_altitude  = '0.0'             # 高度(m)
-sitl_home_direction= '0.0'              # 機首方位(度)
+sitl_home_direction = '0.0'              # 機首方位(度)
 sitl_instance_num   = 0                 # 0〜
 
 
@@ -30,7 +30,7 @@ time.sleep(1)   # 起動完了のために1秒待つ
 
 
 # フライトコントローラ(FC)へ接続
-connection_string = "tcp:localhost:5760"
+connection_string = 'tcp:localhost:' + str(5760 + int(sitl_instance_num) * 10 ) # インスタンスが増えるとポート番号が10増える
 print( "FCへ接続: %s" % (connection_string) )    # 接続設定文字列を表示
 vehicle = connect(connection_string, wait_ready=True)    # 接続
 
