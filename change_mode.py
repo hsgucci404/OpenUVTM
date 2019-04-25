@@ -28,9 +28,9 @@ try:
             # keyの中身に応じて分岐
             if  key=='s':				# stabilize
                 mode = 'STABILIZE'
-            elif key=='a':				# Poshold
+            elif key=='a':				# Alt Hold
                 mode = 'ALT_HOLD'
-            elif key=='p':				# Poshold
+            elif key=='p':				# PosHold
                 mode = 'POSHOLD'
             elif key=='l':				# loiter
                 mode = 'LOITER'
@@ -56,6 +56,5 @@ except( KeyboardInterrupt, SystemExit):    # Ctrl+cが押されたら離脱
 
 # フライトコントローラとの接続を閉じる
 vehicle.close()
-
 
 print("終了．")    # 終了メッセージ
