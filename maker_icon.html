@@ -123,7 +123,7 @@
         drone_popmessage += alt + '[m], ' + ang + '[deg]<br>';
 
         // (lat, lon)の座標にマーカーを作り，icon情報を与え，ポップアップメッセージを追加する
-        L.marker( [ lat, lon],{ icon:quad_x_Icon } ).addTo(　mymap　).bindPopup( drone_popmessage );
+        L.marker( [lat, lon],{ icon:quad_x_Icon } ).addTo( mymap ).bindPopup( drone_popmessage );
 
     };
 
