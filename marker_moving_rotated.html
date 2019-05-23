@@ -115,8 +115,8 @@
 
         var drone_data = JSON.parse( message.payloadString );   // ドローンのデータを連想配列にして格納
 
-        var mode = drone_data.status.Arm;           // ARM/DISARM
-        var arm  = drone_data.status.FlightMode;    // フライトモード
+        var arm = drone_data.status.Arm;           // ARM/DISARM
+        var mode  = drone_data.status.FlightMode;    // フライトモード
         var lat  = parseFloat( drone_data.position.latitude );  // 緯度
         var lon  = parseFloat( drone_data.position.longitude ); // 経度
         var alt  = parseFloat( drone_data.position.altitude );  // 高度
