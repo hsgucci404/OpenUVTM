@@ -18,7 +18,7 @@ drone_command = {
 	"d_alt":"0"
 }
 
-#==メイン関数=================================
+# メイン関数
 def main(args):
 
 	# Tkinterのウィンドウを作る
@@ -26,34 +26,17 @@ def main(args):
 	root.title(u'MQTT publisher for Drone Control')	# ウィンドウタイトルバー
 	root.geometry('400x520')		# ウィンドウサイズ
 
-	# フライトモード、ARM/DISARM用のコールバック関数
+	# ボタンが押された時のコールバック関数
 	def Button_pushed(event):
 		# コマンド(実際はボタン上のテキスト)を取得
 		drone_command["command"] = event.widget["text"]
 
-		# MQTTのサーバー、ポート番号、トピック名を取る
-		mqtt_server = EditBox_Host.get()
-		mqtt_port = int(EditBox_Port.get() )
-		mqtt_topic = EditBox_topic.get()
-
-		# ブローカーへ接続
-		client = mqtt.Client()
-		client.connect( mqtt_server, mqtt_port, 60 )
-		client.loop_start()
-		
-		# データをJSONで作ってPub
-		json_command = json.dumps( drone_command )
-		client.publish( mqtt_topic, json_command )
-		
-		client.loop_stop()
-
-	# GOTOコマンド用のコールバック関数
-	def Goto_pushed(event):
-		# コマンドを作る
-		drone_command["command"] = "GOTO"
-		drone_command["d_lat"] = EditBox_lat.get()
-		drone_command["d_lon"] = EditBox_lon.get()
-		drone_command["d_alt"] = EditBox_alt.get()
+		# GOTOボタンのときは，緯度/経度/高度の情報も取得する
+		if drone_command["command"] == "GOTO":
+			# mainの子なので，main内で定義されているEditBoxクラスにアクセスできる
+			drone_command["d_lat"] = EditBox_lat.get()
+			drone_command["d_lon"] = EditBox_lon.get()
+			drone_command["d_alt"] = EditBox_alt.get()
 
 		# MQTTのサーバー、ポート番号、トピック名を取る
 		mqtt_server = EditBox_Host.get()
@@ -131,11 +114,9 @@ def main(args):
 	Button_mode_land.bind("<Button-1>",Button_pushed )
 	Button_mode_land.pack(side="left")
 
-
 	#空白
 	Label_blank = Tkinter.Label(root,pady=10,font=("",12),text="  ")
 	Label_blank.pack()
-
 
 	# 緯度入力
 	frame5 = Tkinter.Frame(root,pady=10)
@@ -168,7 +149,7 @@ def main(args):
 	frame8 = Tkinter.Frame(root,pady=10)
 	frame8.pack()
 	Button_goto = Tkinter.Button(frame8,font=("",11),text=u'GOTO', width=20)
-	Button_goto.bind("<Button-1>",Goto_pushed )
+	Button_goto.bind("<Button-1>",Button_pushed )
 	Button_goto.pack(side="left")
 
 	# メインループ
@@ -178,4 +159,4 @@ def main(args):
 
 # このpyファイルがscriptとして呼ばれた時はmainを実行．importされたときは何もしない
 if __name__ == '__main__':
-	sys.exit(main(sys.argv))  # ここでmain関数を呼ぶ．argvとはＣ言語と同じコマンドライン引数のこと
+	sys.exit(main(sys.argv)) # ここでmain関数を呼ぶ．argvとはＣ言語と同じコマンドライン引数のこと
