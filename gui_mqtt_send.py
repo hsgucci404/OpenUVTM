@@ -18,7 +18,7 @@ drone_command = {
 	"d_alt":"0"
 }
 
-# メイン関数
+#==メイン関数=================================
 def main(args):
 
 	# Tkinterのウィンドウを作る
@@ -132,10 +132,9 @@ def main(args):
 	Button_mode_land.pack(side="left")
 
 
-
 	#空白
-	Label_lat = Tkinter.Label(root,pady=10,font=("",12),text="  ")
-	Label_lat.pack()
+	Label_blank = Tkinter.Label(root,pady=10,font=("",12),text="  ")
+	Label_blank.pack()
 
 
 	# 緯度入力
@@ -177,5 +176,6 @@ def main(args):
 
 	return 0
 
+# このpyファイルがscriptとして呼ばれた時はmainを実行．importされたときは何もしない
 if __name__ == '__main__':
-	sys.exit(main(sys.argv))
+	sys.exit(main(sys.argv))  # ここでmain関数を呼ぶ．argvとはＣ言語と同じコマンドライン引数のこと
