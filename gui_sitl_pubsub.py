@@ -6,7 +6,7 @@ from subprocess import Popen        # subprocessの中から、Popenをインポ
 from signal import signal, SIGINT   # Ctrl+C(SIGINT)の送出のために必要 
 
 from dronekit import connect        # connectを使いたいのでインポート
-from dronekit import VehicleMode   # VehicleModeも使いたいのでインポート
+from dronekit import VehicleMode    # VehicleModeも使いたいのでインポート
 from dronekit import LocationGlobal, LocationGlobalRelative   # ウェイポイント移動に使いたいのでインポート
 
 import Tkinter                      # GUIを作るライブラリ
@@ -33,7 +33,8 @@ connection_string = 'tcp:localhost:' + str(5760 + int(sitl_instance_num) * 10 ) 
 
 
 #== MQTTの情報，Pub/Subするトピック =======================
-mqtt_server = 'localhost'
+#mqtt_server = 'localhost'
+mqtt_server = '192.168.1.195'
 mqtt_port = 1883
 
 mqtt_pub_topic = 'drone/001'  # Publish用のトピック名を作成
@@ -69,8 +70,7 @@ def main(args):
 	root = Tkinter.Tk()	# ウィンドウ本体の作成
 	root.title(u'Dronekit-SITL Monitor')	# ウィンドウタイトルバー
 	root.geometry('400x550')		# ウィンドウサイズ
-	
-	#==ウィンドウのデザイン==============================
+
 	# Status
 	frame0 = Tkinter.Frame(root,pady=10)
 	frame0.pack()
@@ -158,8 +158,7 @@ def main(args):
 	Label_subtopic.pack(side="left")
 	EditBox_subtopic = Tkinter.Entry(frame10,font=("",11),justify="center",width=30)
 	EditBox_subtopic.pack(side="left")
-	#ここまでウィンドウのデザイン
-	
+
 	#==dronekit-sitlの起動====================================
 	p = Popen(sitl_boot_list)   # サブプロセスの起動
 	time.sleep(1)   # 起動完了のために1秒待つ
@@ -217,6 +216,19 @@ def main(args):
 		EditBox_subtopic.delete(0,Tkinter.END)
 		EditBox_subtopic.insert(Tkinter.END, mqtt_sub_topic )
 
+		#==Publishするデータを作る===============================
+		drone_info["status"]["isArmable"] = str(vehicle.is_armable)                 # ARM可能か？
+		drone_info["status"]["Arm"] = str(vehicle.armed)                            # ARM状態
+		drone_info["status"]["FlightMode"] = str(vehicle.mode.name)                 # フライトモード
+		drone_info["position"]["latitude"] = str(vehicle.location.global_frame.lat)	# 緯度
+		drone_info["position"]["longitude"] = str(vehicle.location.global_frame.lon)# 経度
+		drone_info["position"]["altitude"] = str(vehicle.location.global_frame.alt)	# 高度
+		drone_info["position"]["heading"] = str(vehicle.heading)					# 方位
+
+		#==MQTTの送信===========================================
+		json_message = json.dumps( drone_info )		# 辞書型をJSON型に変換
+		client.publish("drone/001", json_message )   # トピック名は以前と同じ"drone/001"
+
 		# コマンドに対する処理
 		if drone_command["IsChanged"] == "true":
 			# GUIDEDコマンド
@@ -260,9 +272,7 @@ def main(args):
 				if drone_command["d_alt"] == "0":
 					drone_command["d_alt"] = str( vehicle.location.global_frame.alt )	# 高度
 				point = LocationGlobalRelative(float(drone_command["d_lat"]), float(drone_command["d_lon"]), float(drone_command["d_alt"]) )
-				#print point
 				vehicle.simple_goto(point, groundspeed=5)
-
 
 			# コマンドは読み終えたので、フラグを倒す
 			drone_command["IsChanged"] = "false"
@@ -291,8 +301,6 @@ def main(args):
 
 	return 0
 
-
 # このpyファイルがimportされたのではなく，scriptとして実行された時
 if __name__ == '__main__':
 	sys.exit(main(sys.argv))	# ここでmain関数を呼ぶ．argvはC言語と同様にコマンドライン引数
-
