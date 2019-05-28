@@ -182,8 +182,7 @@ def main(args):
 
 	#==MQTTの初期化===========================================
 	client = mqtt.Client()                  # クラスのインスタンス(実体)の作成
-	client.connect( '192.168.1.195', mqtt_port, 60 )   # 接続先は自分自身
-#	client.connect( mqtt_server, mqtt_port, 60 )   # 接続先は自分自身
+	client.connect( mqtt_server, mqtt_port, 60 )   # 接続先は自分自身
 	client.subscribe( mqtt_sub_topic )
 	client.on_message = on_message
 	client.loop_start()                     # 通信処理スタート
