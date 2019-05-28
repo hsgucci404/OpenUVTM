@@ -33,8 +33,7 @@ connection_string = 'tcp:localhost:' + str(5760 + int(sitl_instance_num) * 10 ) 
 
 
 #== MQTTの情報，Pub/Subするトピック =======================
-#mqtt_server = 'localhost'
-mqtt_server = '192.168.1.195'
+mqtt_server = 'localhost'
 mqtt_port = 1883
 
 mqtt_pub_topic = 'drone/001'  # Publish用のトピック名を作成
